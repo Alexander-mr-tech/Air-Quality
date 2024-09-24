@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./Sidebar.css";
+import "../components/Sidebar.css";
+import SearchBar from "../components/searchbar"; 
 import logo from "../images/logo.png";
 import wind from "../images/windspeed.png";
 import wind_direction from "../images/wind_direction.png";
@@ -8,61 +9,68 @@ import humidity from "../images/humidity.png";
 import firespread from "../images/fire_spread.png";
 
 function Sidebar() {
-  const [sliderValue, setSliderValue] = useState(50);
-  const [isChecked, setIsChecked] = useState(false);
+  const [windSpeedChecked, setWindSpeedChecked] = useState(false);
+  const [windDirectionChecked, setWindDirectionChecked] = useState(false);
+  const [temperatureChecked, setTemperatureChecked] = useState(false);
+  const [humidityChecked, setHumidityChecked] = useState(false);
+  const [fireSpreadChecked, setFireSpreadChecked] = useState(false);
+  const [fireHotSpotsChecked, setFireHotSpotsChecked] = useState(false);
 
-  const handleSliderChange = (event) => {
-    setSliderValue(event.target.value);
-  };
-
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-  };
   return (
     <div>
       <div className="sidebar">
         <div className="Sidebar-Header">
           <img src={logo} alt="Logo" />
-          <h3>
-            Forest Fire Predication & <br />
-            Spread Visualization
-          </h3>
+          <h2>Pakistan Forest Observatory</h2>
         </div>
         <div className="scroll_bar">
+          <SearchBar />
           <div className="Sidebar-Content">
             <div className="Sidebar-Col">
               <div>
                 <img src={wind} alt="Wind" />
                 <h2>Wind Speed</h2>
+                <br />
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  checked={windSpeedChecked}
+                  onChange={(e) => setWindSpeedChecked(e.target.checked)}
+                />
               </div>
               <div>
-                <img src={wind_direction} alt="Wind Direcation" />
+                <img src={wind_direction} alt="Wind Direction" />
                 <h2>Wind Direction</h2>
+                <br />
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  checked={windDirectionChecked}
+                  onChange={(e) => setWindDirectionChecked(e.target.checked)}
+                />
               </div>
               <div>
                 <img src={temperature} alt="Temperature" />
                 <h2>Temperature</h2>
+                <br />
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  checked={temperatureChecked}
+                  onChange={(e) => setTemperatureChecked(e.target.checked)}
+                />
               </div>
               <div>
                 <img src={humidity} alt="Humidity" />
                 <h2>Humidity</h2>
+                <br />
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  checked={humidityChecked}
+                  onChange={(e) => setHumidityChecked(e.target.checked)}
+                />
               </div>
-            </div>
-            <div className="Sidebar-Row">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={sliderValue}
-                onChange={handleSliderChange}
-              />
-              <input
-                className="checkbox"
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
-              <label>Click to Show all Parameters</label>
             </div>
           </div>
           <div className="Sidebar-Content">
@@ -70,71 +78,25 @@ function Sidebar() {
               <div>
                 <img src={firespread} alt="Fire Spread" />
                 <h2>Fire Spread</h2>
+                <br />
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  checked={fireSpreadChecked}
+                  onChange={(e) => setFireSpreadChecked(e.target.checked)}
+                />
               </div>
               <div>
                 <img src={wind_direction} alt="Fire Hot Spots" />
                 <h2>Fire Hot Spots</h2>
+                <br />
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  checked={fireHotSpotsChecked}
+                  onChange={(e) => setFireHotSpotsChecked(e.target.checked)}
+                />
               </div>
-              <div>
-                <img src={temperature} alt="Logo" />
-                <h2>Temperature</h2>
-              </div>
-              <div>
-                <img src={humidity} alt="Logo" />
-                <h2>Humidity</h2>
-              </div>
-            </div>
-            <div className="Sidebar-Row">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={sliderValue}
-                onChange={handleSliderChange}
-              />
-              <input
-                className="checkbox"
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
-              <label>Click to Show all Parameters</label>
-            </div>
-          </div>
-          <div className="Sidebar-Content">
-            <div className="Sidebar-Col">
-              <div>
-                <img src={firespread} alt="Fire Spread" />
-                <h2>Fire Spread</h2>
-              </div>
-              <div>
-                <img src={wind_direction} alt="Fire Hot Spots" />
-                <h2>Fire Hot Spots</h2>
-              </div>
-              <div>
-                <img src={temperature} alt="Logo" />
-                <h2>Temperature</h2>
-              </div>
-              <div>
-                <img src={humidity} alt="Logo" />
-                <h2>Humidity</h2>
-              </div>
-            </div>
-            <div className="Sidebar-Row">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={sliderValue}
-                onChange={handleSliderChange}
-              />
-              <input
-                className="checkbox"
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
-              <label>Click to Show all Parameters</label>
             </div>
           </div>
         </div>

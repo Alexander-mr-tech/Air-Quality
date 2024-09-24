@@ -18,14 +18,16 @@
 }
 
 .Sidebar-Header img {
-    width: 170px;
-    height: 170px;
+    width: 180px;
+    height: 180px;
 }
 
-.Sidebar-Header h3 {
+.Sidebar-Header h2 {
     color: white;
-    font-size: 22px;
+    font-size: 28px;
     text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
 }
 
 .Sidebar-Content {
@@ -33,7 +35,7 @@
     flex-direction: column;
     margin-top: 10px;
     width: 100%;
-    height: 40%;
+    height: 30%;
     padding-top: 10px;
     background-color: #054e302d;
     align-items: center;
@@ -58,7 +60,7 @@
 .Sidebar-Col {
     display: flex;
     flex-direction: row;
-    gap: 15px;
+    gap: 5px;
 }
 
 .Sidebar-Row {
@@ -68,13 +70,6 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-}
-
-.Sidebar-Row,
-lable {
-    font-size: 20px;
-    color: orangered;
-    font-weight: bold;
 }
 
 .Sidebar-Row,
@@ -120,11 +115,6 @@ input {
 .scroll_bar::-webkit-scrollbar {
     width: 10px;
 }
-
-/* .scroll_bar::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-} */
 
 .scroll_bar::-webkit-scrollbar-thumb {
     background-color: #888;

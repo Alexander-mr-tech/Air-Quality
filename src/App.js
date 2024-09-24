@@ -1,8 +1,7 @@
-// src/App.js
 import React from "react";
 import "./App.css";
-import Map from "./components/Map";
 import Sidebar from "./components/Sidebar";
+import Map from "./components/Map";
 
 function App() {
   return (
