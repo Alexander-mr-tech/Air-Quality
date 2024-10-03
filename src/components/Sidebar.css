@@ -1,82 +1,122 @@
-/* Sidebar.css */
-.sidebar {
-    justify-content: center;
+/* Drawer container */
+.drawer {
     position: fixed;
-    height: 100vh;
-    width: 26%;
-    background-color: #333;
-}
-
-.Sidebar-Header {
-    width: 100%;
-    height: 18%;
-    background-color: #054e302d;
+    left: -100%;
+    /* Hidden off-screen initially */
+    height: 90%;
+    width: 23%;
+    background-color: rgba(221, 209, 209, 0.829);
+    transition: left 0.1s ease;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-
+    flex-direction: column;
+    z-index: 3;
 }
 
-.Sidebar-Header img {
-    width: 180px;
-    height: 180px;
+.drawer.open {
+    left: 0;
+    /* Drawer slides into view */
 }
 
-.Sidebar-Header h2 {
-    color: white;
-    font-size: 28px;
+/* Arrow button to toggle drawer */
+.toggle-btn {
     text-align: center;
-    font-family: 'Times New Roman', Times, serif;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 30px;
+    height: 80px;
+    transform: translateY(-50%);
+    background-color: white;
+    color: rgb(231, 74, 74);
+    border: 2px solid #007bff;
+    cursor: pointer;
     font-weight: bold;
+    font-size: 24px;
+    border-radius: 0 5px 5px 0;
+    z-index: 1000;
+    transition: left 0.2s ease;
+
 }
 
+.toggle-btn.open {
+    left: 23%;
+    /* Position arrow button at the right edge of the open drawer */
+}
+
+/* Sidebar content */
 .Sidebar-Content {
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
     width: 100%;
-    height: 30%;
-    padding-top: 10px;
-    background-color: #054e302d;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
 }
 
-.Sidebar-Content {
-    text-align: center;
+.Sidebar-Row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.Sidebar-Inner-Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Sidebar-Inner-Content-Row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
 }
 
 .Sidebar-Content img {
     width: 50px;
     height: 50px;
-    /* Space between image and heading */
+    margin-top: 10px;
 }
 
-.Sidebar-Content h2 {
-    color: white;
-    font-size: 14px;
-}
-
-.Sidebar-Col {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-}
-
-.Sidebar-Row {
-    margin-top: 20px;
+.Main-Inner-Content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
 }
 
-.Sidebar-Row,
-input {
-    width: 95%;
+.Sidebar-Content h2 {
+    color: black;
+    font-size: 14px;
 }
 
+/* Scrollable area */
+.scroll_bar {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+/* Custom scrollbar styles */
+.scroll_bar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scroll_bar::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 1px solid #f1f1f1;
+}
+
+.scroll_bar::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+/* Checkbox styles */
 .checkbox {
     appearance: none;
     width: 20px;
@@ -86,6 +126,7 @@ input {
     border-radius: 4px;
     cursor: pointer;
     position: relative;
+    margin-top: 10px;
 }
 
 .checkbox:checked {
@@ -103,25 +144,33 @@ input {
     transform: rotate(45deg);
 }
 
-.scroll_bar {
-    height: 80%;
-    /* Set the height to enable scrolling */
-    overflow-y: scroll;
+.dropdown-container {
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.dropdown-content {
     display: flex;
     flex-direction: column;
 }
 
-/* Custom scrollbar styles */
-.scroll_bar::-webkit-scrollbar {
-    width: 10px;
+.dropdown-inner-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.scroll_bar::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 10px;
-    border: 1px solid #f1f1f1;
+.dropdown-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 10%;
 }
 
-.scroll_bar::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
+.dropdown-title-button {
+    margin-right: 5%;
 }

@@ -1,103 +1,334 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../components/Sidebar.css";
-import SearchBar from "../components/searchbar"; 
-import logo from "../images/logo.png";
 import wind from "../images/windspeed.png";
+import weather from "../images/weather.png";
+import Visibility from "../images/visiblity.png";
+import Pressure from "../images/pressure.png";
+import Feel from "../images/feel.png";
 import wind_direction from "../images/wind_direction.png";
 import temperature from "../images/temperature.png";
 import humidity from "../images/humidity.png";
-import firespread from "../images/fire_spread.png";
+import firespread from "../images/firespread.png";
+import firehotspot from "../images/firehotspot.png";
 
-function Sidebar() {
+function Sidebar({ setWeatherPreferences }) {
+  const [isOpen, Drawer] = useState(false);
+  const [isWeatherDropdown, weatherDropdownOpen] = useState(false);
+  const [isFireSpreadDropdown, FireSpreadDropdownOpen] = useState(false);
+  const [isConopyDropdown, ConopyDropdownOpen] = useState(false);
   const [windSpeedChecked, setWindSpeedChecked] = useState(false);
   const [windDirectionChecked, setWindDirectionChecked] = useState(false);
   const [temperatureChecked, setTemperatureChecked] = useState(false);
   const [humidityChecked, setHumidityChecked] = useState(false);
+  const [weatherChecked, setWeatherChecked] = useState(false);
+  const [feelChecked, setFeelChecked] = useState(false);
+  const [pressureChecked, setPressureChecked] = useState(false);
+  const [visibilityChecked, setVisibilityChecked] = useState(false);
   const [fireSpreadChecked, setFireSpreadChecked] = useState(false);
   const [fireHotSpotsChecked, setFireHotSpotsChecked] = useState(false);
 
+  useEffect(() => {
+    setWeatherPreferences({
+      weatherChecked,
+      temperatureChecked,
+      humidityChecked,
+      feelChecked,
+      windSpeedChecked,
+      windDirectionChecked,
+      pressureChecked,
+      visibilityChecked,
+    });
+  }, [
+    weatherChecked,
+    temperatureChecked,
+    humidityChecked,
+    feelChecked,
+    windSpeedChecked,
+    windDirectionChecked,
+    pressureChecked,
+    visibilityChecked,
+    setWeatherPreferences,
+  ]);
+
+  const toggleDrawer = () => {
+    Drawer(!isOpen);
+  };
+  const weatherDropdown = () => {
+    weatherDropdownOpen(!isWeatherDropdown);
+  };
+  const FirespreadDropdown = () => {
+    FireSpreadDropdownOpen(!isFireSpreadDropdown);
+  };
+  const ConopyDropdown = () => {
+    ConopyDropdownOpen(!isConopyDropdown);
+  };
+
   return (
     <div>
-      <div className="sidebar">
-        <div className="Sidebar-Header">
-          <img src={logo} alt="Logo" />
-          <h2>Pakistan Forest Observatory</h2>
-        </div>
+      {/* Toggle Button (Arrow) */}
+      <button
+        className={`toggle-btn ${isOpen ? "open" : ""}`}
+        onClick={toggleDrawer}
+      >
+        {isOpen ? <span>&#8644;</span> : <span>&#8646;</span>}
+      </button>
+      {/* Sidebar Drawer */}
+      <div className={`drawer ${isOpen ? "open" : ""}`}>
         <div className="scroll_bar">
-          <SearchBar />
-          <div className="Sidebar-Content">
-            <div className="Sidebar-Col">
-              <div>
-                <img src={wind} alt="Wind" />
-                <h2>Wind Speed</h2>
-                <br />
-                <input
-                  className="checkbox"
-                  type="checkbox"
-                  checked={windSpeedChecked}
-                  onChange={(e) => setWindSpeedChecked(e.target.checked)}
-                />
+          <div className="dropdown-container">
+            <div className="dropdown-inner-container">
+              <div className="dropdown-title">
+                <h1>Weather Status</h1>
               </div>
-              <div>
-                <img src={wind_direction} alt="Wind Direction" />
-                <h2>Wind Direction</h2>
-                <br />
-                <input
-                  className="checkbox"
-                  type="checkbox"
-                  checked={windDirectionChecked}
-                  onChange={(e) => setWindDirectionChecked(e.target.checked)}
-                />
-              </div>
-              <div>
-                <img src={temperature} alt="Temperature" />
-                <h2>Temperature</h2>
-                <br />
-                <input
-                  className="checkbox"
-                  type="checkbox"
-                  checked={temperatureChecked}
-                  onChange={(e) => setTemperatureChecked(e.target.checked)}
-                />
-              </div>
-              <div>
-                <img src={humidity} alt="Humidity" />
-                <h2>Humidity</h2>
-                <br />
-                <input
-                  className="checkbox"
-                  type="checkbox"
-                  checked={humidityChecked}
-                  onChange={(e) => setHumidityChecked(e.target.checked)}
-                />
+              <div className="dropdown-title-button">
+                <button
+                  className={`dropdown-btn ${isWeatherDropdown ? "open" : ""}`}
+                  onClick={weatherDropdown}
+                >
+                  {isWeatherDropdown ? "👁️" : "👁️‍🗨️"}
+                </button>
               </div>
             </div>
+            {/* Dropdown Content */}
+            {isWeatherDropdown && (
+              <div className="dropdown-content">
+                <div className="Sidebar-Content">
+                  <div className="Sidebar-Row">
+                    <div className="Sidebar-Inner-Content">
+                      <img src={temperature} alt="Temperature" />
+                      <h2>Temperature</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={temperatureChecked}
+                        onChange={(e) =>
+                          setTemperatureChecked(e.target.checked)
+                        }
+                      />
+                      <img src={weather} alt="Wind Direction" />
+                      <h2>Weather</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={weatherChecked}
+                        onChange={(e) => setWeatherChecked(e.target.checked)}
+                      />
+                    </div>
+                    <div className="Sidebar-Inner-Content">
+                      <img src={humidity} alt="Humidity" />
+                      <h2>Humidity</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={humidityChecked}
+                        onChange={(e) => setHumidityChecked(e.target.checked)}
+                      />
+                      <img src={Feel} alt="Feel" />
+                      <h2>Feel Like</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={feelChecked}
+                        onChange={(e) => setFeelChecked(e.target.checked)}
+                      />
+                    </div>
+                    <div className="Sidebar-Inner-Content">
+                      <img src={wind} alt="Wind" />
+                      <h2>Speed</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={windSpeedChecked}
+                        onChange={(e) => setWindSpeedChecked(e.target.checked)}
+                      />
+                      <img src={Pressure} alt="Pressure" />
+                      <h2>Pressure</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={pressureChecked}
+                        onChange={(e) => setPressureChecked(e.target.checked)}
+                      />
+                    </div>
+                    <div className="Sidebar-Inner-Content">
+                      <img src={wind_direction} alt="Wind Direction" />
+                      <h2>Direction</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={windDirectionChecked}
+                        onChange={(e) =>
+                          setWindDirectionChecked(e.target.checked)
+                        }
+                      />
+                      <img src={Visibility} alt="Visibility" />
+                      <h2>Visibility</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={visibilityChecked}
+                        onChange={(e) => setVisibilityChecked(e.target.checked)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          <div className="Sidebar-Content">
-            <div className="Sidebar-Col">
-              <div>
-                <img src={firespread} alt="Fire Spread" />
-                <h2>Fire Spread</h2>
-                <br />
-                <input
-                  className="checkbox"
-                  type="checkbox"
-                  checked={fireSpreadChecked}
-                  onChange={(e) => setFireSpreadChecked(e.target.checked)}
-                />
+          {/* // Fire Spread */}
+          <div className="dropdown-container">
+            <div className="dropdown-inner-container">
+              <div className="dropdown-title">
+                <h1>Fire Spread Status</h1>
               </div>
-              <div>
-                <img src={wind_direction} alt="Fire Hot Spots" />
-                <h2>Fire Hot Spots</h2>
-                <br />
-                <input
-                  className="checkbox"
-                  type="checkbox"
-                  checked={fireHotSpotsChecked}
-                  onChange={(e) => setFireHotSpotsChecked(e.target.checked)}
-                />
+              <div className="dropdown-title-button">
+                <button
+                  className={`dropdown-btn ${
+                    isFireSpreadDropdown ? "open" : ""
+                  }`}
+                  onClick={FirespreadDropdown}
+                >
+                  {isFireSpreadDropdown ? "👁️" : "👁️‍🗨️"}
+                </button>
               </div>
             </div>
+            {/* Dropdown Content */}
+            {isFireSpreadDropdown && (
+              <div className="dropdown-content">
+                <div className="Sidebar-Content">
+                  <div className="Sidebar-Row">
+                    <div className="Sidebar-Inner-Content-Row">
+                      <div className="Main-Inner-Content">
+                        <img src={firespread} alt="Fire Spread" />
+                        <h2>Spread</h2>
+                        <input
+                          className="checkbox"
+                          type="checkbox"
+                          checked={fireSpreadChecked}
+                          onChange={(e) =>
+                            setFireSpreadChecked(e.target.checked)
+                          }
+                        />
+                      </div>
+                      <div className="Main-Inner-Content">
+                        <img src={firehotspot} alt="Firehotspots" />
+                        <h2>Hot Spots</h2>
+                        <input
+                          className="checkbox"
+                          type="checkbox"
+                          checked={fireHotSpotsChecked}
+                          onChange={(e) =>
+                            setFireHotSpotsChecked(e.target.checked)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* // Conopy Cover */}
+          <div className="dropdown-container">
+            <div className="dropdown-inner-container">
+              <div className="dropdown-title">
+                <h1>Conopy Status</h1>
+              </div>
+              <div className="dropdown-title-button">
+                <button
+                  className={`dropdown-btn ${isConopyDropdown ? "open" : ""}`}
+                  onClick={ConopyDropdown}
+                >
+                  {isConopyDropdown ? "👁️" : "👁️‍🗨️"}
+                </button>
+              </div>
+            </div>
+            {/* Dropdown Content */}
+            {isConopyDropdown && (
+              <div className="dropdown-content">
+                <div className="Sidebar-Content">
+                  {/* <div className="Sidebar-Row">
+                    <div className="Sidebar-Inner-Content">
+                      <img src={temperature} alt="Temperature" />
+                      <h2>Temperature</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={temperatureChecked}
+                        onChange={(e) =>
+                          setTemperatureChecked(e.target.checked)
+                        }
+                      />
+                      <img src={weather} alt="Wind Direction" />
+                      <h2>Weather</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={weatherChecked}
+                        onChange={(e) => setWeatherChecked(e.target.checked)}
+                      />
+                    </div>
+                    <div className="Sidebar-Inner-Content">
+                      <img src={humidity} alt="Humidity" />
+                      <h2>Humidity</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={humidityChecked}
+                        onChange={(e) => setHumidityChecked(e.target.checked)}
+                      />
+                      <img src={Feel} alt="Feel" />
+                      <h2>Feel Like</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={feelChecked}
+                        onChange={(e) => setFeelChecked(e.target.checked)}
+                      />
+                    </div>
+                    <div className="Sidebar-Inner-Content">
+                      <img src={wind} alt="Wind" />
+                      <h2>Speed</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={windSpeedChecked}
+                        onChange={(e) => setWindSpeedChecked(e.target.checked)}
+                      />
+                      <img src={Pressure} alt="Pressure" />
+                      <h2>Pressure</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={pressureChecked}
+                        onChange={(e) => setPressureChecked(e.target.checked)}
+                      />
+                    </div>
+                    <div className="Sidebar-Inner-Content">
+                      <img src={wind_direction} alt="Wind Direction" />
+                      <h2>Direction</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={windDirectionChecked}
+                        onChange={(e) =>
+                          setWindDirectionChecked(e.target.checked)
+                        }
+                      />
+                      <img src={Visibility} alt="Visibility" />
+                      <h2>Visibility</h2>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={visibilityChecked}
+                        onChange={(e) => setVisibilityChecked(e.target.checked)}
+                      />
+                    </div>
+                  </div>
+                </div> */}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
