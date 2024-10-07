@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   GoogleMap,
   LoadScript,
@@ -8,7 +8,8 @@ import {
   DirectionsRenderer,
   Autocomplete,
 } from "@react-google-maps/api";
-import Sidebar from "../components/Sidebar";
+import Papa from "papaparse";
+import fire from "../images/fire.png";
 import axios from "axios";
 import {
   Box,
@@ -56,8 +57,9 @@ const pakistanBoundaryCoords = [
   { lat: 24.0, lng: 61.0 },
 ];
 
-const Map = () => {
-  const [weatherPreferences, setWeatherPreferences] = useState({});
+const Map = ({ weatherPreferences, showMarkers }) => {
+  const [markerData, setMarkerData] = useState([]);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [weather, setWeather] = useState(null);
   const [selectedPosition, setSelectedPosition] = useState(null);
@@ -138,9 +140,49 @@ const Map = () => {
     originRef.current.value = "";
     destinationRef.current.value = "";
   };
+  const handleOnLoad = () => {
+    console.log("Google Maps API loaded");
+    setIsMapLoaded(true); // Set the flag to true once the API has loaded
+  };
+
+  useEffect(() => {
+    if (!isMapLoaded) return; // Only run the effect after Google Maps API has loaded
+
+    console.log("Fetching and parsing CSV data...");
+
+    // Fetch and parse the CSV file from the public folder
+    fetch("/firedata.csv")
+      .then((response) => response.text())
+      .then((csvData) => {
+        Papa.parse(csvData, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (result) => {
+            console.log("Parsed CSV data: ", result.data); // Debugging CSV data
+
+            const fireData = result.data.map((item) => ({
+              latitude: parseFloat(item.latitude),
+              longitude: parseFloat(item.longitude),
+              brightness: parseFloat(item.brightness),
+            }));
+
+            console.log("Marker data: ", fireData); // Debugging marker data
+
+            setMarkerData(fireData); // Set the parsed data for markers
+          },
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching or parsing the CSV file: ", error);
+      });
+  }, [isMapLoaded]);
 
   return (
-    <LoadScript googleMapsApiKey={MAP_API_KEY} libraries={libraries}>
+    <LoadScript
+      googleMapsApiKey={MAP_API_KEY}
+      onLoad={handleOnLoad}
+      libraries={libraries}
+    >
       <Flex
         position="relative"
         flexDirection="column"
@@ -149,11 +191,10 @@ const Map = () => {
         w="100vw"
       >
         <Box position="absolute" left={0} top={0} h="100%" w="100%">
-          <Sidebar setWeatherPreferences={setWeatherPreferences} />
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={3}
+            zoom={5}
             onLoad={(mapInstance) => setMap(mapInstance)} // Store the map instance
             options={{
               restriction: {
@@ -166,6 +207,7 @@ const Map = () => {
               streetViewControl: false,
               mapTypeControl: false,
               disableDefaultContextMenu: false,
+              mapTypeId: "hybrid", // Could also be "roadmap" "satellite", "terrain", or "hybrid"
             }}
             onClick={handleMapClick} // Handle clicks on the map
           >
@@ -207,6 +249,18 @@ const Map = () => {
                 )}
               </InfoWindow>
             )}
+            {showMarkers &&
+              markerData.length > 0 &&
+              markerData.map((item, index) => (
+                <Marker
+                  key={index}
+                  position={{ lat: item.latitude, lng: item.longitude }}
+                  icon={{
+                    url: fire, // Path to the custom fire image
+                    scaledSize: new window.google.maps.Size(30, 30), // Scale the icon
+                  }}
+                />
+              ))}
           </GoogleMap>
         </Box>
 

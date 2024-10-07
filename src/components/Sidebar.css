@@ -69,7 +69,7 @@
     align-items: center;
 }
 
-.Sidebar-Inner-Content-Row {
+.Firespred-Inner-Content-Row {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -77,18 +77,36 @@
     gap: 40px;
 }
 
+.Firespred-Inner-Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Conopy-Inner-Content-Row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.Conopy-Inner-Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
 .Sidebar-Content img {
     width: 50px;
     height: 50px;
     margin-top: 10px;
 }
 
-.Main-Inner-Content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 
 .Sidebar-Content h2 {
     color: black;
