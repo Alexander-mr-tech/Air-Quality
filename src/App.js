@@ -7,6 +7,7 @@ import Sidebar from "./components/Sidebar";
 function App() {
   const [weatherPreferences, setWeatherPreferences] = useState({});
   const [fireHotSpotsChecked, setFireHotSpotsChecked] = useState(false);
+
   return (
     <div className="Main_Container">
       <Navbar />

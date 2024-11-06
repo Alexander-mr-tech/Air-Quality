@@ -158,7 +158,7 @@ const Map = ({ weatherPreferences, showMarkers }) => {
           header: true,
           skipEmptyLines: true,
           complete: (result) => {
-            console.log("Parsed CSV data: ", result.data); // Debugging CSV data
+            // console.log("Parsed CSV data: ", result.data); // Debugging CSV data
 
             const fireData = result.data.map((item) => ({
               latitude: parseFloat(item.latitude),
@@ -166,7 +166,7 @@ const Map = ({ weatherPreferences, showMarkers }) => {
               brightness: parseFloat(item.brightness),
             }));
 
-            console.log("Marker data: ", fireData); // Debugging marker data
+            // console.log("Marker data: ", fireData); // Debugging marker data
 
             setMarkerData(fireData); // Set the parsed data for markers
           },

@@ -8,8 +8,11 @@ import Feel from "../images/feel.png";
 import wind_direction from "../images/wind_direction.png";
 import temperature from "../images/temperature.png";
 import humidity from "../images/humidity.png";
-import firespread from "../images/firespread.png";
 import firehotspot from "../images/firehotspot.png";
+import HeatMap from "../images/heatmap.png";
+import firespread from "../images/firespread.png";
+import StreetView from "../images/street-view.png";
+import SatelliteView from "../images/satellite.png";
 import ConpoyCover from "../images/Conopy_Cover.png";
 import ConpoyHeight from "../images/Conopy_Height.png";
 import ConpoyBaseHeight from "../images/Conopy_Base_Height.png";
@@ -21,10 +24,13 @@ function Sidebar({
   setFireHotSpotsChecked,
   setWeatherPreferences,
 }) {
-  const [isOpen, Drawer] = useState(false);
-  const [isWeatherDropdown, weatherDropdownOpen] = useState(false);
-  const [isFireSpreadDropdown, FireSpreadDropdownOpen] = useState(false);
-  const [isConopyDropdown, ConopyDropdownOpen] = useState(false);
+  const [isOpen, Drawer] = useState(false); // Drawer
+  const [isWeatherDropdown, weatherDropdownOpen] = useState(false); // Weather Drop Down
+  const [isMapDropdown, MapDropdownOpen] = useState(false); // Map Drop Down
+  const [isFireSpreadDropdown, FireSpreadDropdownOpen] = useState(false); // Fire Drop Down
+  const [isConopyDropdown, ConopyDropdownOpen] = useState(false); // Fire Drop Down
+
+  // Weather Perameters
   const [temperatureChecked, setTemperatureChecked] = useState(false);
   const [humidityChecked, setHumidityChecked] = useState(false);
   const [windSpeedChecked, setWindSpeedChecked] = useState(false);
@@ -33,8 +39,16 @@ function Sidebar({
   const [feelChecked, setFeelChecked] = useState(false);
   const [pressureChecked, setPressureChecked] = useState(false);
   const [visibilityChecked, setVisibilityChecked] = useState(false);
-  const [fireSpreadChecked, setFireSpreadChecked] = useState(false);
+  // Map Perameters
+  const [defaultMapChecked, setdefaultMapChecked] = useState(false);
+  const [satelliteViewChecked, setsatelliteViewChecked] = useState(false);
+  const [streetViewChecked, setstreetViewChecked] = useState(false);
+  const [hybridViewChecked, sethybridViewChecked] = useState(false);
+  // Fire Perameters
   // const [fireHotSpotsChecked, setFireHotSpotsChecked] = useState(false);
+  const [fireHeatMapChecked, setFireHeatMapChecked] = useState(false);
+  const [fireSpreadChecked, setFireSpreadChecked] = useState(false);
+  // Conopy Perameters
   const [ConpoyCoverChecked, setConpoyCoverChecked] = useState(false);
   const [ConpoyHeightChecked, setConpoyHeightChecked] = useState(false);
   const [ConpoyBaseHeightChecked, setConpoyBaseHeightChecked] = useState(false);
@@ -71,6 +85,9 @@ function Sidebar({
   const weatherDropdown = () => {
     weatherDropdownOpen(!isWeatherDropdown);
   };
+  const mapviewDropdown = () => {
+    MapDropdownOpen(!isMapDropdown);
+  };
   const FirespreadDropdown = () => {
     FireSpreadDropdownOpen(!isFireSpreadDropdown);
   };
@@ -90,6 +107,7 @@ function Sidebar({
       {/* Sidebar Drawer */}
       <div className={`drawer ${isOpen ? "open" : ""}`}>
         <div className="scroll_bar">
+          {/* Weather Dropdown Content */}
           <div className="dropdown-container">
             <div className="dropdown-inner-container">
               <div className="dropdown-title">
@@ -104,11 +122,11 @@ function Sidebar({
                 </button>
               </div>
             </div>
-            {/* Dropdown Content */}
             {isWeatherDropdown && (
               <div className="dropdown-content">
                 <div className="Sidebar-Content">
                   <div className="Sidebar-Row">
+                    {/* Temperature */}
                     <div className="Sidebar-Inner-Content">
                       <img src={temperature} alt="Temperature" />
                       <h2>Temperature</h2>
@@ -129,6 +147,7 @@ function Sidebar({
                         onChange={(e) => setWeatherChecked(e.target.checked)}
                       />
                     </div>
+                    {/* humidity */}
                     <div className="Sidebar-Inner-Content">
                       <img src={humidity} alt="Humidity" />
                       <h2>Humidity</h2>
@@ -147,6 +166,7 @@ function Sidebar({
                         onChange={(e) => setFeelChecked(e.target.checked)}
                       />
                     </div>
+                    {/* speed */}
                     <div className="Sidebar-Inner-Content">
                       <img src={wind} alt="Wind" />
                       <h2>Speed</h2>
@@ -165,6 +185,7 @@ function Sidebar({
                         onChange={(e) => setPressureChecked(e.target.checked)}
                       />
                     </div>
+                    {/* Direction */}
                     <div className="Sidebar-Inner-Content">
                       <img src={wind_direction} alt="Wind Direction" />
                       <h2>Direction</h2>
@@ -184,6 +205,81 @@ function Sidebar({
                         checked={visibilityChecked}
                         onChange={(e) => setVisibilityChecked(e.target.checked)}
                       />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* Map Dropdown Content */}
+          <div className="dropdown-container">
+            <div className="dropdown-inner-container">
+              <div className="dropdown-title">
+                <h1>Map View</h1>
+              </div>
+              <div className="dropdown-title-button">
+                <button
+                  className={`dropdown-btn ${isMapDropdown ? "open" : ""}`}
+                  onClick={mapviewDropdown}
+                >
+                  {isMapDropdown ? "👁️" : "👁️‍🗨️"}
+                </button>
+              </div>
+            </div>
+            {/* Map view Dropdown Content */}
+            {isMapDropdown && (
+              <div className="dropdown-content">
+                <div className="Sidebar-Content">
+                  <div className="Sidebar-Row">
+                    <div className="Conopy-Inner-Content-Row">
+                      <div className="Conopy-Inner-Content">
+                        <img src={ConpoyCover} alt="Copony Cover" />
+                        <h2>Default</h2>
+                        <input
+                          className="checkbox"
+                          type="checkbox"
+                          checked={defaultMapChecked}
+                          onChange={(e) =>
+                            setdefaultMapChecked(e.target.checked)
+                          }
+                        />
+                      </div>
+                      <div className="Conopy-Inner-Content">
+                        <img src={SatelliteView} alt="Satellite View" />
+                        <h2>Satellite</h2>
+                        <input
+                          className="checkbox"
+                          type="checkbox"
+                          checked={satelliteViewChecked}
+                          onChange={(e) =>
+                            setsatelliteViewChecked(e.target.checked)
+                          }
+                        />
+                      </div>
+                      <div className="Conopy-Inner-Content">
+                        <img src={StreetView} alt="Street View" />
+                        <h2>Street</h2>
+                        <input
+                          className="checkbox"
+                          type="checkbox"
+                          checked={streetViewChecked}
+                          onChange={(e) =>
+                            setstreetViewChecked(e.target.checked)
+                          }
+                        />
+                      </div>
+                      <div className="Conopy-Inner-Content">
+                        <img src={ConpoyLayerCount} alt="Conpoy Layer Count" />
+                        <h2>Hybrid</h2>
+                        <input
+                          className="checkbox"
+                          type="checkbox"
+                          checked={hybridViewChecked}
+                          onChange={(e) =>
+                            sethybridViewChecked(e.target.checked)
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -226,6 +322,18 @@ function Sidebar({
                         />
                       </div>
                       <div className="Firespred-Inner-Content">
+                        <img src={HeatMap} alt="Heat Map" />
+                        <h2>Heat Map</h2>
+                        <input
+                          className="checkbox"
+                          type="checkbox"
+                          checked={fireHeatMapChecked}
+                          onChange={(e) =>
+                            setFireHeatMapChecked(e.target.checked)
+                          }
+                        />
+                      </div>
+                      <div className="Firespred-Inner-Content">
                         <img src={firespread} alt="Fire Spread" />
                         <h2>Spread</h2>
                         <input
@@ -258,7 +366,7 @@ function Sidebar({
                 </button>
               </div>
             </div>
-            {/* Dropdown Content */}
+            {/* Conopy Dropdown Content */}
             {isConopyDropdown && (
               <div className="dropdown-content">
                 <div className="Sidebar-Content">
