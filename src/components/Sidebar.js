@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { database } from "../firebase";
+import { ref, onValue } from "firebase/database";
 import "../components/Sidebar.css";
 import wind from "../images/windspeed.png";
 import weather from "../images/weather.png";
@@ -18,27 +20,34 @@ import ConpoyHeight from "../images/Conopy_Height.png";
 import ConpoyBaseHeight from "../images/Conopy_Base_Height.png";
 import ConpoyBulkDensity from "../images/Conopy_Bulk_Height.png";
 import ConpoyLayerCount from "../images/Conopy_Layers.png";
+import SmokeSensor from "../images/smoke_sensor.png";
+import GasSensor from "../images/gas_sensor.png";
+import {
+  Select, // Import Select here
+} from "@chakra-ui/react";
 
 function Sidebar({
   fireHotSpotsChecked,
   setFireHotSpotsChecked,
   setWeatherPreferences,
 }) {
+  const [sensorData, setSensorData] = useState(null); //firebase
   const [isOpen, Drawer] = useState(false); // Drawer
   const [isWeatherDropdown, weatherDropdownOpen] = useState(false); // Weather Drop Down
   const [isMapDropdown, MapDropdownOpen] = useState(false); // Map Drop Down
   const [isFireSpreadDropdown, FireSpreadDropdownOpen] = useState(false); // Fire Drop Down
   const [isConopyDropdown, ConopyDropdownOpen] = useState(false); // Fire Drop Down
+  const [isSensersDropdown, SensorsDropdownOpen] = useState(false); // Sensors Drop Down
 
   // Weather Perameters
-  const [temperatureChecked, setTemperatureChecked] = useState(false);
-  const [humidityChecked, setHumidityChecked] = useState(false);
-  const [windSpeedChecked, setWindSpeedChecked] = useState(false);
-  const [windDirectionChecked, setWindDirectionChecked] = useState(false);
-  const [weatherChecked, setWeatherChecked] = useState(false);
-  const [feelChecked, setFeelChecked] = useState(false);
-  const [pressureChecked, setPressureChecked] = useState(false);
-  const [visibilityChecked, setVisibilityChecked] = useState(false);
+  const [temperatureChecked, setTemperatureChecked] = useState(true);
+  const [humidityChecked, setHumidityChecked] = useState(true);
+  const [windSpeedChecked, setWindSpeedChecked] = useState(true);
+  const [windDirectionChecked, setWindDirectionChecked] = useState(true);
+  const [weatherChecked, setWeatherChecked] = useState(true);
+  const [feelChecked, setFeelChecked] = useState(true);
+  const [pressureChecked, setPressureChecked] = useState(true);
+  const [visibilityChecked, setVisibilityChecked] = useState(true);
   // Map Perameters
   const [defaultMapChecked, setdefaultMapChecked] = useState(false);
   const [satelliteViewChecked, setsatelliteViewChecked] = useState(false);
@@ -55,6 +64,9 @@ function Sidebar({
   const [ConpoyBulkDensityChecked, setConpoyBulkDensityChecked] =
     useState(false);
   const [ConpoyLayerCountChecked, setConpoyLayerCountChecked] = useState(false);
+
+  /// Map id
+  const [mapTypeId, setMapTypeId] = useState("hybrid"); // New state for map type
 
   useEffect(() => {
     setWeatherPreferences({
@@ -79,6 +91,21 @@ function Sidebar({
     setWeatherPreferences,
   ]);
 
+  //firebase
+  useEffect(() => {
+    // Reference the Sensor_Data node
+    const sensorDataRef = ref(database, "Sensor_Data");
+
+    // Listen for data changes
+    const unsubscribe = onValue(sensorDataRef, (snapshot) => {
+      const data = snapshot.val(); // Fetch the data
+      setSensorData(data); // Update state
+    });
+
+    // Cleanup listener on unmount
+    return () => unsubscribe();
+  }, []);
+
   const toggleDrawer = () => {
     Drawer(!isOpen);
   };
@@ -93,6 +120,13 @@ function Sidebar({
   };
   const ConopyDropdown = () => {
     ConopyDropdownOpen(!isConopyDropdown);
+  };
+  const SensorsDropdown = () => {
+    SensorsDropdownOpen(!isSensersDropdown);
+  };
+
+  const handleChange = (e) => {
+    setMapTypeId(e.target.value);
   };
 
   return (
@@ -233,52 +267,17 @@ function Sidebar({
                   <div className="Sidebar-Row">
                     <div className="Conopy-Inner-Content-Row">
                       <div className="Conopy-Inner-Content">
-                        <img src={ConpoyCover} alt="Copony Cover" />
-                        <h2>Default</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={defaultMapChecked}
-                          onChange={(e) =>
-                            setdefaultMapChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                      <div className="Conopy-Inner-Content">
-                        <img src={SatelliteView} alt="Satellite View" />
-                        <h2>Satellite</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={satelliteViewChecked}
-                          onChange={(e) =>
-                            setsatelliteViewChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                      <div className="Conopy-Inner-Content">
-                        <img src={StreetView} alt="Street View" />
-                        <h2>Street</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={streetViewChecked}
-                          onChange={(e) =>
-                            setstreetViewChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                      <div className="Conopy-Inner-Content">
-                        <img src={ConpoyLayerCount} alt="Conpoy Layer Count" />
-                        <h2>Hybrid</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={hybridViewChecked}
-                          onChange={(e) =>
-                            sethybridViewChecked(e.target.checked)
-                          }
-                        />
+                        <Select
+                          value={mapTypeId}
+                          onChange={handleChange}
+                          width="300px"
+                          margin="10px"
+                        >
+                          <option value="roadmap">Roadmap</option>
+                          <option value="satellite">Satellite</option>
+                          <option value="terrain">Terrain</option>
+                          <option value="hybrid">Hybrid</option>
+                        </Select>
                       </div>
                     </div>
                   </div>
@@ -438,6 +437,167 @@ function Sidebar({
                             setConpoyLayerCountChecked(e.target.checked)
                           }
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* // Sensors Details */}
+          <div className="dropdown-container">
+            <div className="dropdown-inner-container">
+              <div className="dropdown-title">
+                <h1>Real Time Sensors Data</h1>
+              </div>
+              <div className="dropdown-title-button">
+                <button
+                  className={`dropdown-btn ${isSensersDropdown ? "open" : ""}`}
+                  onClick={SensorsDropdown}
+                >
+                  {isSensersDropdown ? "👁️" : "👁️‍🗨️"}
+                </button>
+              </div>
+            </div>
+            {/* Conopy Dropdown Content */}
+            {isSensersDropdown && (
+              <div className="dropdown-content">
+                <div className="Sidebar-Content">
+                  <div className="Sidebar-Row">
+                    <div className="Conopy-Inner-Content-Row">
+                      <div className="Conopy-Inner-Content">
+                        <img src={temperature} alt="Temperature Sensor" />
+                        <h2>Temperature Sensor</h2>
+                        <div
+                          style={{
+                            width: "65px",
+                            height: "40px",
+                            backgroundColor: "lightgray",
+                            fontWeight: "bold",
+                            alignContent: "center",
+                            fontSize: "24px",
+                            border: "2px solid green",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          {sensorData.Temperature_Sensor}°C
+                        </div>
+                      </div>
+                      <div className="Conopy-Inner-Content">
+                        <img src={humidity} alt="Humidity Sensor" />
+                        <h2>Humidity Sensors</h2>
+                        <div
+                          style={{
+                            width: "65px",
+                            height: "40px",
+                            backgroundColor: "lightgray",
+                            fontWeight: "bold",
+                            alignContent: "center",
+                            fontSize: "24px",
+                            border: "2px solid green",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          {sensorData.Humidity_Sensor}%
+                        </div>
+                      </div>
+                      <div className="Conopy-Inner-Content">
+                        <img src={SmokeSensor} alt="Smoke Sensor" />
+                        <h2>Smoke Sensor</h2>
+                        <div
+                          style={{
+                            width: "65px",
+                            height: "40px",
+                            backgroundColor: "lightgray",
+                            fontWeight: "bold",
+                            alignContent: "center",
+                            fontSize: "24px",
+                            border: "2px solid green",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          {sensorData.Smoke_Sensor}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="Sidebar-Row">
+                    <div className="Conopy-Inner-Content-Row">
+                      <div className="Conopy-Inner-Content">
+                        <img src={GasSensor} alt="Gas Sensor" />
+                        <h2>Gas Sensor</h2>
+                        <div
+                          style={{
+                            width: "65px",
+                            height: "40px",
+                            backgroundColor: "lightgray",
+                            fontWeight: "bold",
+                            alignContent: "center",
+                            fontSize: "24px",
+                            border: "2px solid green",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          {sensorData.Gas_Sensor}%
+                        </div>
+                      </div>
+                      <div className="Conopy-Inner-Content">
+                        <img src={ConpoyLayerCount} alt="Conpoy Layer Count" />
+                        <h2>Carbon Monoxide</h2>
+                        <div
+                          style={{
+                            width: "65px",
+                            height: "40px",
+                            backgroundColor: "lightgray",
+                            fontWeight: "bold",
+                            alignContent: "center",
+                            fontSize: "24px",
+                            border: "2px solid green",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          {sensorData.Carbon_Monoxide}%
+                        </div>
+                      </div>
+                      <div className="Conopy-Inner-Content">
+                        <img src={ConpoyLayerCount} alt="Conpoy Layer Count" />
+                        <h2>Ozone Sensor</h2>
+                        <div
+                          style={{
+                            width: "65px",
+                            height: "40px",
+                            backgroundColor: "lightgray",
+                            fontWeight: "bold",
+                            alignContent: "center",
+                            fontSize: "24px",
+                            border: "2px solid green",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          {sensorData.Ozone_Sensor}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="Sidebar-Row">
+                    <div className="Conopy-Inner-Content-Row">
+                      <div className="Conopy-Inner-Content">
+                        <img src={ConpoyLayerCount} alt="Conpoy Layer Count" />
+                        <h2>H₂S Gas Sensor</h2>
+                        <div
+                          style={{
+                            width: "65px",
+                            height: "40px",
+                            backgroundColor: "lightgray",
+                            fontWeight: "bold",
+                            alignContent: "center",
+                            fontSize: "24px",
+                            border: "2px solid green",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          {sensorData.H2S_Sensor}%
+                        </div>
                       </div>
                     </div>
                   </div>
