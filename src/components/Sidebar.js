@@ -13,8 +13,6 @@ import humidity from "../images/humidity.png";
 import firehotspot from "../images/firehotspot.png";
 import HeatMap from "../images/heatmap.png";
 import firespread from "../images/firespread.png";
-import StreetView from "../images/street-view.png";
-import SatelliteView from "../images/satellite.png";
 import ConpoyCover from "../images/Conopy_Cover.png";
 import ConpoyHeight from "../images/Conopy_Height.png";
 import ConpoyBaseHeight from "../images/Conopy_Base_Height.png";
@@ -22,6 +20,7 @@ import ConpoyBulkDensity from "../images/Conopy_Bulk_Height.png";
 import ConpoyLayerCount from "../images/Conopy_Layers.png";
 import SmokeSensor from "../images/smoke_sensor.png";
 import GasSensor from "../images/gas_sensor.png";
+import OzoneSensor from "../images/ozone_sensor.png";
 import {
   Select, // Import Select here
 } from "@chakra-ui/react";
@@ -35,6 +34,7 @@ function Sidebar({
   const [isOpen, Drawer] = useState(false); // Drawer
   const [isWeatherDropdown, weatherDropdownOpen] = useState(false); // Weather Drop Down
   const [isMapDropdown, MapDropdownOpen] = useState(false); // Map Drop Down
+  const [isForestlistDropdown, ForestlistDropdownOpen] = useState(false); // Map Drop Down
   const [isFireSpreadDropdown, FireSpreadDropdownOpen] = useState(false); // Fire Drop Down
   const [isConopyDropdown, ConopyDropdownOpen] = useState(false); // Fire Drop Down
   const [isSensersDropdown, SensorsDropdownOpen] = useState(false); // Sensors Drop Down
@@ -48,11 +48,6 @@ function Sidebar({
   const [feelChecked, setFeelChecked] = useState(true);
   const [pressureChecked, setPressureChecked] = useState(true);
   const [visibilityChecked, setVisibilityChecked] = useState(true);
-  // Map Perameters
-  const [defaultMapChecked, setdefaultMapChecked] = useState(false);
-  const [satelliteViewChecked, setsatelliteViewChecked] = useState(false);
-  const [streetViewChecked, setstreetViewChecked] = useState(false);
-  const [hybridViewChecked, sethybridViewChecked] = useState(false);
   // Fire Perameters
   // const [fireHotSpotsChecked, setFireHotSpotsChecked] = useState(false);
   const [fireHeatMapChecked, setFireHeatMapChecked] = useState(false);
@@ -67,6 +62,8 @@ function Sidebar({
 
   /// Map id
   const [mapTypeId, setMapTypeId] = useState("hybrid"); // New state for map type
+  /// List of Forest
+  const [forestlist, setforestlist] = useState(null); // New state for map type
 
   useEffect(() => {
     setWeatherPreferences({
@@ -114,6 +111,9 @@ function Sidebar({
   };
   const mapviewDropdown = () => {
     MapDropdownOpen(!isMapDropdown);
+  };
+  const forestlistDropdown = () => {
+    ForestlistDropdownOpen(!isForestlistDropdown);
   };
   const FirespreadDropdown = () => {
     FireSpreadDropdownOpen(!isFireSpreadDropdown);
@@ -245,205 +245,6 @@ function Sidebar({
               </div>
             )}
           </div>
-          {/* Map Dropdown Content */}
-          <div className="dropdown-container">
-            <div className="dropdown-inner-container">
-              <div className="dropdown-title">
-                <h1>Map View</h1>
-              </div>
-              <div className="dropdown-title-button">
-                <button
-                  className={`dropdown-btn ${isMapDropdown ? "open" : ""}`}
-                  onClick={mapviewDropdown}
-                >
-                  {isMapDropdown ? "👁️" : "👁️‍🗨️"}
-                </button>
-              </div>
-            </div>
-            {/* Map view Dropdown Content */}
-            {isMapDropdown && (
-              <div className="dropdown-content">
-                <div className="Sidebar-Content">
-                  <div className="Sidebar-Row">
-                    <div className="Conopy-Inner-Content-Row">
-                      <div className="Conopy-Inner-Content">
-                        <Select
-                          value={mapTypeId}
-                          onChange={handleChange}
-                          width="300px"
-                          margin="10px"
-                        >
-                          <option value="roadmap">Roadmap</option>
-                          <option value="satellite">Satellite</option>
-                          <option value="terrain">Terrain</option>
-                          <option value="hybrid">Hybrid</option>
-                        </Select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-          {/* // Fire Spread */}
-          <div className="dropdown-container">
-            <div className="dropdown-inner-container">
-              <div className="dropdown-title">
-                <h1>Fire Spread Status</h1>
-              </div>
-              <div className="dropdown-title-button">
-                <button
-                  className={`dropdown-btn ${
-                    isFireSpreadDropdown ? "open" : ""
-                  }`}
-                  onClick={FirespreadDropdown}
-                >
-                  {isFireSpreadDropdown ? "👁️" : "👁️‍🗨️"}
-                </button>
-              </div>
-            </div>
-            {/* Dropdown Content */}
-            {isFireSpreadDropdown && (
-              <div className="dropdown-content">
-                <div className="Sidebar-Content">
-                  <div className="Sidebar-Row">
-                    <div className="Firespred-Inner-Content-Row">
-                      <div className="Firespred-Inner-Content">
-                        <img src={firehotspot} alt="Firehotspots" />
-                        <h2>Hot Spots</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={fireHotSpotsChecked}
-                          onChange={(e) =>
-                            setFireHotSpotsChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                      <div className="Firespred-Inner-Content">
-                        <img src={HeatMap} alt="Heat Map" />
-                        <h2>Heat Map</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={fireHeatMapChecked}
-                          onChange={(e) =>
-                            setFireHeatMapChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                      <div className="Firespred-Inner-Content">
-                        <img src={firespread} alt="Fire Spread" />
-                        <h2>Spread</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={fireSpreadChecked}
-                          onChange={(e) =>
-                            setFireSpreadChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-          {/* // Conopy Cover */}
-          <div className="dropdown-container">
-            <div className="dropdown-inner-container">
-              <div className="dropdown-title">
-                <h1>Conopy Status</h1>
-              </div>
-              <div className="dropdown-title-button">
-                <button
-                  className={`dropdown-btn ${isConopyDropdown ? "open" : ""}`}
-                  onClick={ConopyDropdown}
-                >
-                  {isConopyDropdown ? "👁️" : "👁️‍🗨️"}
-                </button>
-              </div>
-            </div>
-            {/* Conopy Dropdown Content */}
-            {isConopyDropdown && (
-              <div className="dropdown-content">
-                <div className="Sidebar-Content">
-                  <div className="Sidebar-Row">
-                    <div className="Conopy-Inner-Content-Row">
-                      <div className="Conopy-Inner-Content">
-                        <img src={ConpoyCover} alt="Copony Cover" />
-                        <h2>Cover</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={ConpoyCoverChecked}
-                          onChange={(e) =>
-                            setConpoyCoverChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                      <div className="Conopy-Inner-Content">
-                        <img src={ConpoyHeight} alt="Conopy Height" />
-                        <h2>Height</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={ConpoyHeightChecked}
-                          onChange={(e) =>
-                            setConpoyHeightChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                      <div className="Conopy-Inner-Content">
-                        <img src={ConpoyBaseHeight} alt="Conopy Base Height" />
-                        <h2>Base Height</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={ConpoyBaseHeightChecked}
-                          onChange={(e) =>
-                            setConpoyBaseHeightChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="Sidebar-Row">
-                    <div className="Conopy-Inner-Content-Row">
-                      <div className="Conopy-Inner-Content">
-                        <img
-                          src={ConpoyBulkDensity}
-                          alt="Conpoy Bulk Density"
-                        />
-                        <h2>Bulk Density</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={ConpoyBulkDensityChecked}
-                          onChange={(e) =>
-                            setConpoyBulkDensityChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                      <div className="Conopy-Inner-Content">
-                        <img src={ConpoyLayerCount} alt="Conpoy Layer Count" />
-                        <h2>Layer Count</h2>
-                        <input
-                          className="checkbox"
-                          type="checkbox"
-                          checked={ConpoyLayerCountChecked}
-                          onChange={(e) =>
-                            setConpoyLayerCountChecked(e.target.checked)
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
           {/* // Sensors Details */}
           <div className="dropdown-container">
             <div className="dropdown-inner-container">
@@ -475,7 +276,7 @@ function Sidebar({
                             backgroundColor: "lightgray",
                             fontWeight: "bold",
                             alignContent: "center",
-                            fontSize: "24px",
+                            fontSize: "20px",
                             border: "2px solid green",
                             borderRadius: "10px",
                           }}
@@ -493,7 +294,7 @@ function Sidebar({
                             backgroundColor: "lightgray",
                             fontWeight: "bold",
                             alignContent: "center",
-                            fontSize: "24px",
+                            fontSize: "20px",
                             border: "2px solid green",
                             borderRadius: "10px",
                           }}
@@ -511,7 +312,7 @@ function Sidebar({
                             backgroundColor: "lightgray",
                             fontWeight: "bold",
                             alignContent: "center",
-                            fontSize: "24px",
+                            fontSize: "20px",
                             border: "2px solid green",
                             borderRadius: "10px",
                           }}
@@ -533,7 +334,7 @@ function Sidebar({
                             backgroundColor: "lightgray",
                             fontWeight: "bold",
                             alignContent: "center",
-                            fontSize: "24px",
+                            fontSize: "20px",
                             border: "2px solid green",
                             borderRadius: "10px",
                           }}
@@ -551,52 +352,12 @@ function Sidebar({
                             backgroundColor: "lightgray",
                             fontWeight: "bold",
                             alignContent: "center",
-                            fontSize: "24px",
+                            fontSize: "20px",
                             border: "2px solid green",
                             borderRadius: "10px",
                           }}
                         >
                           {sensorData.Carbon_Monoxide}%
-                        </div>
-                      </div>
-                      <div className="Conopy-Inner-Content">
-                        <img src={ConpoyLayerCount} alt="Conpoy Layer Count" />
-                        <h2>Ozone Sensor</h2>
-                        <div
-                          style={{
-                            width: "65px",
-                            height: "40px",
-                            backgroundColor: "lightgray",
-                            fontWeight: "bold",
-                            alignContent: "center",
-                            fontSize: "24px",
-                            border: "2px solid green",
-                            borderRadius: "10px",
-                          }}
-                        >
-                          {sensorData.Ozone_Sensor}%
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="Sidebar-Row">
-                    <div className="Conopy-Inner-Content-Row">
-                      <div className="Conopy-Inner-Content">
-                        <img src={ConpoyLayerCount} alt="Conpoy Layer Count" />
-                        <h2>H₂S Gas Sensor</h2>
-                        <div
-                          style={{
-                            width: "65px",
-                            height: "40px",
-                            backgroundColor: "lightgray",
-                            fontWeight: "bold",
-                            alignContent: "center",
-                            fontSize: "24px",
-                            border: "2px solid green",
-                            borderRadius: "10px",
-                          }}
-                        >
-                          {sensorData.H2S_Sensor}%
                         </div>
                       </div>
                     </div>

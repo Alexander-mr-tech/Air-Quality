@@ -5,6 +5,7 @@
     /* Hidden off-screen initially */
     height: 90%;
     width: 23%;
+    margin-top: 10vh;
     background-color: rgba(221, 209, 209, 0.829);
     transition: left 0.1s ease;
     display: flex;

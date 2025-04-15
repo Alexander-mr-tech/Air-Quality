@@ -5,6 +5,7 @@
 
 /* Web Main Container */
 .Main_Container {
+  margin-top: 10vh;
   height: 90vh;
   width: 100%;
   display: flex;
